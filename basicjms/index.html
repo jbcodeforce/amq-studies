@@ -289,8 +289,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-jms-apis" title="The JMS APIs" class="md-nav__link">
-    The JMS APIs
+  <a href="#major-jms-concepts" title="Major JMS concepts" class="md-nav__link">
+    Major JMS concepts
   </a>
   
 </li>
@@ -298,6 +298,13 @@
         <li class="md-nav__item">
   <a href="#producing-text-message" title="Producing text message" class="md-nav__link">
     Producing text message
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vertx" title="Vert.x" class="md-nav__link">
+    Vert.x
   </a>
   
 </li>
@@ -341,8 +348,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-jms-apis" title="The JMS APIs" class="md-nav__link">
-    The JMS APIs
+  <a href="#major-jms-concepts" title="Major JMS concepts" class="md-nav__link">
+    Major JMS concepts
   </a>
   
 </li>
@@ -350,6 +357,13 @@
         <li class="md-nav__item">
   <a href="#producing-text-message" title="Producing text message" class="md-nav__link">
     Producing text message
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vertx" title="Vert.x" class="md-nav__link">
+    Vert.x
   </a>
   
 </li>
@@ -377,7 +391,7 @@
 <p>Some example of the JMS consumer and producer API and implementation considerations.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <p>Be sure to have access to Active MQ artemis broker, in docker or on a cluster.</p>
-<h2 id="the-jms-apis">The JMS APIs</h2>
+<h2 id="major-jms-concepts">Major JMS concepts</h2>
 <p>The basic api can be summarized in the following diagram from <code>codenotfound.com</code></p>
 <p><img alt="JMS API programming model" src="../images/jms-api-programming-model.png" /></p>
 <ul>
@@ -387,8 +401,17 @@
 <li>A MessageProducer is an object that is created by a session and used for sending messages to a destination</li>
 <li>A MessageConsumer is an object that is created by a session and used for receiving messages</li>
 <li>Destination is a queue or a topic</li>
+<li>Message includes metadata.</li>
 </ul>
+<p>A client can have multiple connections and in a connection can have multiple sessions. Each session can have producer, consumer or both. So a client can go to different destinations: queues and topics. </p>
 <h2 id="producing-text-message">Producing text message</h2>
+<p>In JMS 1.1 producer.send() blocks untile remote peer acknowledges delivery. But JMS 2.0, support asynchronous send with CompletionListener. New classes are added like JMSProducer, and JMSConsumer which are lightweight, and have operations to access message properties and to support chaining.  </p>
+<p>In JMS 2.0, the JMSContext implements the AutoCloseable interface, so no need to call the close() operation, if the creation of the JMSContext is in try with resources and catch.</p>
+<div class="codehilite"><pre><span></span>
+</pre></div>
+
+<p>See JMS 2.0 API specifics in <a href="https://www.oracle.com/technetwork/articles/java/jms20-1947669.html">this document</a>.</p>
+<h2 id="vertx">Vert.x</h2>
                 
                   
                 

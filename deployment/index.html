@@ -270,8 +270,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#run-local-using-docker" title="Run local using docker" class="md-nav__link">
-    Run local using docker
+  <a href="#run-active-mq-artemis-local-using-docker" title="Run Active MQ Artemis local using docker" class="md-nav__link">
+    Run Active MQ Artemis local using docker
   </a>
   
 </li>
@@ -327,8 +327,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#run-local-using-docker" title="Run local using docker" class="md-nav__link">
-    Run local using docker
+  <a href="#run-active-mq-artemis-local-using-docker" title="Run Active MQ Artemis local using docker" class="md-nav__link">
+    Run Active MQ Artemis local using docker
   </a>
   
 </li>
@@ -360,21 +360,41 @@
                 
                 
                 <h1 id="amq-deployments">AMQ Deployments</h1>
-<h2 id="run-local-using-docker">Run local using docker</h2>
-<p>Classical Active MQ
-<div class="codehilite"><pre><span></span> docker run -d  \
-    --name activemq -p 8161:8161 -p 61616:61616 -p 61613:61613 \
-    -p 61617:61617 smaject/activemq
+<h2 id="run-active-mq-artemis-local-using-docker">Run Active MQ Artemis local using docker</h2>
+<p>Download tar file from <a href="https://activemq.apache.org/components/artemis/download/">https://activemq.apache.org/components/artemis/download/</a>. Unzip and then set the $ARTEMIS_HOME environment variable to the folder containing artemis. (e.g. &lt; somewhere&gt;/apache-artemis-2.10.0)</p>
+<p>Clone the official docker files for ubuntu or centos from this github: <a href="https://github.com/apache/activemq-artemis">https://github.com/apache/activemq-artemis</a>.</p>
+<p>The do the steps described in this repository README. I built the centos image:</p>
+<p><div class="codehilite"><pre><span></span>docker build -f ./docker/Dockerfile-centos -t artemis-centos .
 </pre></div>
-Matching dockerfile is <a href="https://hub.docker.com/r/smaject/activemq/dockerfile">here</a> where we can see the different exposed ports. </p>
-<p>Access the ActiveMQ admin-console as usual. Just invoke <code>http://localhost:8161/admin/</code> admin/admin</p>
-<p>For the Artemis version 
-<div class="codehilite"><pre><span></span>docker run -it -p 61616:61616 -p 8161:8161 -v &lt;broker folder on host&gt;:/var/lib/artemis-instance artemis-centos 
-docker run -d -e &#39;ARTEMIS_MIN_MEMORY=1512M&#39; -e &#39;ARTEMIS_MAX_MEMORY=3048M&#39; -e ARTEMIS_USERNAME=admin -e ARTEMIS_PASSWORD=password -p 61616:61616 -p 8161:8161 vromero/activemq-artemis
+Start with the command:
+<div class="codehilite"><pre><span></span>docker run -it -p 61616:61616 -p 8161:8161 -v $ARTEMIS_HOME/instance:/var/lib/artemis-instance artemis-centos 
+
+
+Or you can run the broker in the background using:
+
+   &quot;/var/lib/artemis-instance/bin/artemis-service&quot; start
+
+     _        _               _
+    / \  ____| |_  ___ __  __(_) _____
+   / _ \|  _ \ __|/ _ \  \/  | |/  __/
+  / ___ \ | \/ |_/  __/ |\/| | |\___ \
+ /_/   \_\|   \__\____|_|  |_|_|/___ /
+ Apache ActiveMQ Artemis 2.10.0
+
+
+2019-09-06 16:03:45,113 INFO  [org.apache.activemq.artemis.integration.bootstrap] AMQ101000: Starting ActiveMQ Artemis Server
 </pre></div></p>
-<p>The artemis management console:</p>
+<p>Access the ActiveMQ admin-console as usual. Just invoke <code>http://localhost:8161/</code> artemis/artemis</p>
+<p>The artemis management console looks like:</p>
 <p><img alt="Artemis Console" src="../images/artemis-console.png" /></p>
 <h2 id="running-on-openshift">Running on Openshift</h2>
+<p>Create an application using one of the oc template: openshift/amq-broker-71-basic</p>
+<div class="codehilite"><pre><span></span>oc new-app amq-broker-71-basic -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt -p AMQ_USER=amquser -pAMQ_PASSWORD=amqpassword -p AMQ_QUEUES=example
+</pre></div>
+
+<p>which create brokers with the different protocols.</p>
+<p>See the AMQP, reactive library <a href="https://github.com/amqp/rhea">rhea project</a> with different JavaScripts examples.</p>
+<p>[Red Hat Openshift Application Runtime(https://developers.redhat.com/products/rhoar/overview)</p>
                 
                   
                 

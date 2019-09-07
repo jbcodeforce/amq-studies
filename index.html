@@ -265,6 +265,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#architecture" title="Architecture" class="md-nav__link">
+    Architecture
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clustering" title="Clustering" class="md-nav__link">
+    Clustering
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-to-use-it" title="When to use it" class="md-nav__link">
     When to use it
   </a>
@@ -348,6 +368,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#architecture" title="Architecture" class="md-nav__link">
+    Architecture
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clustering" title="Clustering" class="md-nav__link">
+    Clustering
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-to-use-it" title="When to use it" class="md-nav__link">
     When to use it
   </a>
@@ -388,7 +428,8 @@
                 
                 
                 <h1 id="amq-studies">AMQ Studies</h1>
-<p><a href="https://activemq.apache.org/">Apache Active MQ</a> starts as the first open source JMS specification implementation but ahs evolved to a event driven architecture backbone, with peristence, massive scalability and high availability. It has now in two flavors: classic and artemis.</p>
+<p><a href="https://activemq.apache.org/">Apache Active MQ</a> started in 2004 as the first open source JMS specification implementation but has evolved to a event driven architecture backbone, with peristence, massive scalability and high availability. It is a big product with a lot of features.
+It is now in two flavors: classic and artemis. Artemis is the new architecture.</p>
 <h2 id="characteristics">Characteristics</h2>
 <ul>
 <li>Heterogeneous application integration<ul>
@@ -404,6 +445,27 @@
 <li>Support HTTP/S via REST call, STOMP, MQTT, AMQT</li>
 <li>Provide clustering model where messages can be intelligently load balanced between the servers in the cluster, according to the number of consumers on each node, and whether they are ready for messages</li>
 </ul>
+<h2 id="architecture">Architecture</h2>
+<p>Here is a diagram of Artemis architecture:</p>
+<p><img alt="Artemis architecture" src="images/artemis-arch.png" /></p>
+<ul>
+<li>Each broker server is a Java POJO.</li>
+<li>Use persistent journal to persist messages on disk. It is possible to plug a JDBC and remote database. (This experimental)</li>
+<li>Client applications can interact with any protocol which are mapped to Core protocol. JMS API has a provider that uses the core client library.</li>
+<li>Broker always just deals with core API interactions.</li>
+<li>The normal stand-alone messaging broker configuration comprises a core messaging broker and a number of protocol managers that provide support for the various protoco</li>
+</ul>
+<h3 id="clustering">Clustering</h3>
+<p>The goal is to group servers so they can share the message processing. Each server within the cluster manages its own messages and handles its own connections. Cluster is formed by each node declaring cluster connections to other nodes in the <code>broker.xml</code> configuration file. 
+Cluster connections allow messages to flow between the nodes of the cluster to balance load.</p>
+<p>There are a set of interesting features to consider:</p>
+<ul>
+<li>Server discovery: each broker shares their connection configuration with client or other server so they can discover them, without explicit knowledge of their static end point. To establish the first connection, clients or servers use dynamic discovery using UDP multicast, or the JGroups.</li>
+<li>To support discovery, each server define a <strong>broadcast group</strong>, which is the means by which a server broadcasts connectors information over the network. <strong>Connector</strong> defines how the client or server can connect to this broker.</li>
+</ul>
+<div class="codehilite"><pre><span></span>
+</pre></div>
+
 <h2 id="when-to-use-it">When to use it</h2>
 <ul>
 <li>For point to point communication between Java microservices</li>
