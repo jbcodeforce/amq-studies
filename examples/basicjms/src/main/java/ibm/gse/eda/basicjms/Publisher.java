@@ -33,7 +33,7 @@ public class Publisher {
     protected Random random = new Random();
     
     public Publisher() throws JMSException {
-    	factory = new ActiveMQConnectionFactory(ApplicationConfig.brokerurl);
+    	factory = new ActiveMQConnectionFactory(ApplicationConfig.brokerUrl());
     	connection = factory.createConnection();
         connection.start();
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);

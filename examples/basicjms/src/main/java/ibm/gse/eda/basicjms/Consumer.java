@@ -28,9 +28,8 @@ public class Consumer {
     	 */
     	factory = new ActiveMQConnectionFactory(
      			ApplicationConfig.brokerUrl());
-    	factory.createContext(ApplicationConfig.activeMQUserName(), ApplicationConfig.activeMQUserPassword());
+    	// factory.createContext(ApplicationConfig.activeMQUserName(), ApplicationConfig.activeMQUserPassword());
     	connection = factory.createConnection();
-        connection.start();
         session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
     }
     
@@ -44,11 +43,39 @@ public class Consumer {
 		return session;
 	}
 	
-    public static void main(String[] args) throws JMSException {
-    	Consumer consumer = new Consumer();
-    	Destination destination = consumer.getSession().createTopic(ApplicationConfig.topicName);
-    	MessageConsumer messageConsumer = consumer.getSession().createConsumer(destination);
-    	messageConsumer.setMessageListener(new Listener());
+	public Connection getConnection() {
+		return connection;
+	}
+	
+    public static void main(String[] args) {
+    	System.out.println("Start consumer... v0.0.1");
+    	Consumer consumer = null;
+		try {
+			consumer = new Consumer();
+		
+			Destination destination = consumer.getSession().createTopic(ApplicationConfig.topicName);
+			MessageConsumer messageConsumer = consumer.getSession().createConsumer(destination);
+			messageConsumer.setMessageListener(new Listener());
+			consumer.getConnection().start();
+			try{  
+			   while(!Thread.currentThread().isInterrupted()){  
+			       Thread.sleep(2000);    
+			   }  
+			}
+			catch(InterruptedException e){  
+
+			}
+		} catch (JMSException e) {
+			e.printStackTrace();
+			if (consumer != null) {
+				try {
+					consumer.close();
+				} catch (JMSException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+    
     }
 	
 }

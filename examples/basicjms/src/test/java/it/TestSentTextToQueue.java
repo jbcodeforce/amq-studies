@@ -23,7 +23,7 @@ public class TestSentTextToQueue {
 
 	         // Step 3. perform a lookup on the Connection Factory
 	         ConnectionFactory cf = (ConnectionFactory) initialContext.lookup("ConnectionFactory");
-	         cf.createContext("admin", "password");
+	         cf.createContext("artemis", "artemis");
 	         // Step 4. Create a JMS Connection
 	         connection = cf.createConnection();
 
@@ -40,7 +40,7 @@ public class TestSentTextToQueue {
 	         MessageConsumer messageConsumer2 = session.createConsumer(topic);
 
 	         // Step 9. Create a Text Message
-	         TextMessage message = session.createTextMessage("This is a text message");
+	         TextMessage message = session.createTextMessage("This is a simple text message");
 
 	         System.out.println("Sent message: " + message.getText());
 

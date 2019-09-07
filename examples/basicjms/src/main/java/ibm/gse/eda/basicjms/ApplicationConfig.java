@@ -6,11 +6,11 @@ public class ApplicationConfig {
 	public static String brokerurl = "tcp://" + System.getenv().getOrDefault("ACTIVEMQ_URL", "localhost:61616");
 	
 	public static String activeMQUserName() {
-		return System.getenv().getOrDefault("ACTIVEMQ_USER", "admin");
+		return System.getenv().getOrDefault("ARTEMIS_USER", "artemis");
 	}
 	
 	public static String activeMQUserPassword() {
-		return System.getenv().getOrDefault("ACTIVEMQ_USER_PWD", "admin");
+		return System.getenv().getOrDefault("ARTEMIS_PASSWORD", "artemis");
 	}
 	
 	public static String brokerUrl() {
