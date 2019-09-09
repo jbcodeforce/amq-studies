@@ -1,5 +1,5 @@
 site_name: studies
-repo_url: https://github.com/jbcodeforce/openshift-studies
+repo_url: https://github.com/jbcodeforce/amq-studies
 nav:
   - Introduction: index.md
   - Deployments: deployment.md
@@ -8,7 +8,9 @@ nav:
 
 theme: 
   name: material
+  logo: images/cloud.png
 extra_css: ["extra.css"]
+  
 markdown_extensions:
   - admonition
   - codehilite
