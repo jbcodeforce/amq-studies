@@ -36,7 +36,7 @@
     
     
       
-        <title>JMS Basis - studies</title>
+        <title>Amqp - studies</title>
       
     
     
@@ -96,10 +96,6 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#basic-jms-examples" tabindex="1" class="md-skip">
-        Skip to content
-      </a>
-    
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
@@ -121,7 +117,7 @@
               studies
             </span>
             <span class="md-header-nav__topic">
-              JMS Basis
+              Amqp
             </span>
           
         </div>
@@ -253,77 +249,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        JMS Basis
-      </label>
-    
-    <a href="./" title="JMS Basis" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../basicjms/" title="JMS Basis" class="md-nav__link">
       JMS Basis
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
-    Pre-requisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#major-jms-concepts" title="Major JMS concepts" class="md-nav__link">
-    Major JMS concepts
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#test-jms-11-app" title="Test JMS 1.1 app" class="md-nav__link">
-    Test JMS 1.1 app
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#producing-text-message" title="Producing text message" class="md-nav__link">
-    Producing text message
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vertx" title="Vert.x" class="md-nav__link">
-    Vert.x
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -334,101 +264,18 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
-    Pre-requisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#major-jms-concepts" title="Major JMS concepts" class="md-nav__link">
-    Major JMS concepts
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#test-jms-11-app" title="Test JMS 1.1 app" class="md-nav__link">
-    Test JMS 1.1 app
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#producing-text-message" title="Producing text message" class="md-nav__link">
-    Producing text message
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vertx" title="Vert.x" class="md-nav__link">
-    Vert.x
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/jbcodeforce/amq-studies/edit/master/docs/basicjms.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/jbcodeforce/amq-studies/edit/master/docs/amqp.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="basic-jms-examples">Basic JMS examples</h1>
-<p>Some example of the JMS consumer and producer API and implementation considerations.</p>
-<h2 id="pre-requisites">Pre-requisites</h2>
-<p>Be sure to have access to Active MQ artemis broker, in docker or on a cluster. We are testing on local laptop ad Openshift cluster described in <a href="../deployment/">this note</a>.</p>
-<h2 id="major-jms-concepts">Major JMS concepts</h2>
-<p>The basic api can be summarized in the following diagram from <code>codenotfound.com</code></p>
-<p><img alt="JMS API programming model" src="../images/jms-api-programming-model.png" /></p>
-<ul>
-<li>ConnectionFactory is used to create JMS connection to the provider. It needs the broker URL, username and password.</li>
-<li>Connection is the encapsulation to the TCP/IP socket between the client and the provider. Always close connection to avoid congestion on the Provider side.</li>
-<li>A session is a single-threaded context for producing and consuming messages. A session provides a transactional context with which to group a set of sends and receives into an atomic unit of work.</li>
-<li>A MessageProducer is an object that is created by a session and used for sending messages to a destination</li>
-<li>A MessageConsumer is an object that is created by a session and used for receiving messages</li>
-<li>Destination is a queue or a topic</li>
-<li>Message includes metadata.</li>
-</ul>
-<p>A client can have multiple connections and in a connection can have multiple sessions. Each session can have producer, consumer or both. So a client can go to different destinations: queues and topics. </p>
-<h2 id="test-jms-11-app">Test JMS 1.1 app</h2>
-<p>The following steps use the code under the examples/basicjms folder and </p>
-<h2 id="producing-text-message">Producing text message</h2>
-<p>In JMS 1.1 producer.send() blocks until remote peer acknowledges delivery. The code in the <a href="https://github.com/jbcodeforce/amq-studies/blob/84587ecd96a1072b54981f5e44314e908370ab72/examples/basicjms/src/main/java/ibm/gse/eda/basicjms/Publisher.java#L59">Publisher.java</a> class demonstrates the 1.1 API. </p>
-<p>But JMS 2.0, support asynchronous send with CompletionListener. New classes are added like JMSProducer, and JMSConsumer which are lightweight, and have operations to access message properties and to support chaining.  </p>
-<p>In JMS 2.0, the JMSContext implements the AutoCloseable interface, so no need to call the close() operation, if the creation of the JMSContext is in try with resources and catch.</p>
-<div class="codehilite"><pre><span></span>
-</pre></div>
-
-<p>See JMS 2.0 API specifics in <a href="https://www.oracle.com/technetwork/articles/java/jms20-1947669.html">this document</a>.</p>
-<h2 id="vertx">Vert.x</h2>
+                  <h1>Amqp</h1>
+                
+                <p>See the AMQP, reactive library <a href="https://github.com/amqp/rhea">rhea project</a> with different JavaScripts examples.</p>
+<p>[Red Hat Openshift Application Runtime(https://developers.redhat.com/products/rhoar/overview)</p>
                 
                   
                 
@@ -445,27 +292,6 @@
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href="../deployment/" title="Deployments" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Deployments
-              </span>
-            </div>
-          </a>
-        
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
