@@ -1,25 +1,55 @@
 # AMQ Deployments
 
-## Run local using docker
+## Run Active MQ Artemis local using docker
 
-Classical Active MQ
-```
- docker run -d  \
-    --name activemq -p 8161:8161 -p 61616:61616 -p 61613:61613 \
-    -p 61617:61617 smaject/activemq
-```
-Matching dockerfile is [here](https://hub.docker.com/r/smaject/activemq/dockerfile) where we can see the different exposed ports. 
+Download tar file from [https://activemq.apache.org/components/artemis/download/](https://activemq.apache.org/components/artemis/download/). Unzip and then set the $ARTEMIS_HOME environment variable to the folder containing artemis. (e.g. < somewhere>/apache-artemis-2.10.0)
 
-Access the ActiveMQ admin-console as usual. Just invoke `http://localhost:8161/admin/` admin/admin
+Clone the official docker files for ubuntu or centos from this github: [https://github.com/apache/activemq-artemis](https://github.com/apache/activemq-artemis).
 
-For the Artemis version 
+The do the steps described in this repository README. I built the centos image:
+
 ```
-docker run -it -p 61616:61616 -p 8161:8161 -v <broker folder on host>:/var/lib/artemis-instance artemis-centos 
-docker run -d -e 'ARTEMIS_MIN_MEMORY=1512M' -e 'ARTEMIS_MAX_MEMORY=3048M' -e ARTEMIS_USERNAME=admin -e ARTEMIS_PASSWORD=password -p 61616:61616 -p 8161:8161 vromero/activemq-artemis
+docker build -f ./docker/Dockerfile-centos -t artemis-centos .
+```
+Start with the command:
+```
+docker run -it -p 61616:61616 -p 8161:8161 -v $ARTEMIS_HOME/instance:/var/lib/artemis-instance artemis-centos 
+
+
+Or you can run the broker in the background using:
+
+   "/var/lib/artemis-instance/bin/artemis-service" start
+
+     _        _               _
+    / \  ____| |_  ___ __  __(_) _____
+   / _ \|  _ \ __|/ _ \  \/  | |/  __/
+  / ___ \ | \/ |_/  __/ |\/| | |\___ \
+ /_/   \_\|   \__\____|_|  |_|_|/___ /
+ Apache ActiveMQ Artemis 2.10.0
+
+
+2019-09-06 16:03:45,113 INFO  [org.apache.activemq.artemis.integration.bootstrap] AMQ101000: Starting ActiveMQ Artemis Server
+
 ```
 
-The artemis management console:
+
+Access the ActiveMQ admin-console as usual. Just invoke `http://localhost:8161/` artemis/artemis
+
+The artemis management console looks like:
 
 ![Artemis Console](images/artemis-console.png)
 
 ## Running on Openshift
+
+You may follow the instruction for the last AMQ release: at the time of writing 
+Create an application using one of the oc template: openshift/amq-broker-71-basic
+
+```
+oc new-app amq-broker-71-basic -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt -p AMQ_USER=amquser -pAMQ_PASSWORD=amqpassword -p AMQ_QUEUES=example
+```
+
+which create brokers with the different protocols.
+
+See the AMQP, reactive library [rhea project](https://github.com/amqp/rhea) with different JavaScripts examples.
+
+[Red Hat Openshift Application Runtime(https://developers.redhat.com/products/rhoar/overview)

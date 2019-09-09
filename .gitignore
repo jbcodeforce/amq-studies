@@ -1,2 +1,6 @@
 site/
 examples/basicjms/target/
+*.ts
+*.cert
+*.ks
+broker_cert

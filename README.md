@@ -1,7 +1,8 @@
-# $1
+# Active MQ Artemis Study
 
+Some technology summary, studies and code about Apache Active MQ Artemis architecture. This is to assess how EDA can use it as aevent backbone.
 
-Better read in [book format.](https://jbcodeforce.github.io/$1/).
+Better read in [book format.](https://jbcodeforce.github.io/amq-studies).
 
 
 ## Building this booklet locally
