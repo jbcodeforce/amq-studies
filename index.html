@@ -458,6 +458,8 @@ It is now in two flavors: classic and artemis. Artemis is the new architecture.<
 <h3 id="clustering">Clustering</h3>
 <p>The goal is to group servers so they can share the message processing. Each server within the cluster manages its own messages and handles its own connections. Cluster is formed by each node declaring cluster connections to other nodes in the <code>broker.xml</code> configuration file. 
 Cluster connections allow messages to flow between the nodes of the cluster to balance load.</p>
+<p><img alt="" src="" /></p>
+<p>A single node can belong to multiple clusters simultaneously. </p>
 <p>There are a set of interesting features to consider:</p>
 <ul>
 <li>Server discovery: each broker shares their connection configuration with client or other server so they can discover them, without explicit knowledge of their static end point. To establish the first connection, clients or servers use dynamic discovery using UDP multicast, or the JGroups.</li>

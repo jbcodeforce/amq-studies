@@ -388,7 +388,8 @@ Or you can run the broker in the background using:
 <p>The artemis management console looks like:</p>
 <p><img alt="Artemis Console" src="../images/artemis-console.png" /></p>
 <h2 id="running-on-openshift">Running on Openshift</h2>
-<p>Create an application using one of the oc template: openshift/amq-broker-71-basic</p>
+<p>You may follow the instruction for the last AMQ release: at the time of writing 
+Create an application using one of the oc template: openshift/amq-broker-71-basic</p>
 <div class="codehilite"><pre><span></span>oc new-app amq-broker-71-basic -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt -p AMQ_USER=amquser -pAMQ_PASSWORD=amqpassword -p AMQ_QUEUES=example
 </pre></div>
 
