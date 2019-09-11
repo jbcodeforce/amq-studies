@@ -24,8 +24,15 @@ A client can have multiple connections and in a connection can have multiple ses
 
 ## Test JMS 1.1 app
 
-The following steps use the code under the examples/basicjms folder and 
-## Producing text message
+The following steps use the code under the examples/basicjms/src/test folder and validate quickly to send and receive a text message. The integration test is [TestSentTextToQueue](https://github.com/jbcodeforce/amq-studies/blob/master/examples/basicjms/src/test/java/it/TestSentTextToQueue.java).
+
+To run it use the maven command as:
+
+```
+mvn exec:java -Dexec.mainClass="it.TestSentTextToQueue" -Dexec.classpathScope="test"
+```
+
+## Producing text message with 2.0
 
 In JMS 1.1 producer.send() blocks until remote peer acknowledges delivery. The code in the [Publisher.java](https://github.com/jbcodeforce/amq-studies/blob/84587ecd96a1072b54981f5e44314e908370ab72/examples/basicjms/src/main/java/ibm/gse/eda/basicjms/Publisher.java#L59) class demonstrates the 1.1 API. 
 

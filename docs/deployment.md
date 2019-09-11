@@ -38,7 +38,12 @@ The artemis management console looks like:
 
 ![Artemis Console](images/artemis-console.png)
 
-The next step is to test with an application, for that see [this note]().
+The next step is to test with a simple application, for that see [the basicjms note](basicjms.md) or the AMQP sample [here](amqp.md).
+
+## Clustering on separate servers
+
+![]()
+
 
 ## Running on Openshift
 
@@ -98,3 +103,6 @@ The things to do:
      * Create a SSL route to allow inbound traffic to AMQ broker using SSL.
           ![SSL route](images/rh-amq-ssl-route.png)
 
+### Deploying a cluster on openshift
+
+The instructions are detailed in [section 8.3 of this note](https://access.redhat.com/documentation/en-us/red_hat_amq/7.4/html-single/deploying_amq_broker_on_openshift_container_platform/index#clustered_broker-broker-ocp), 

@@ -2,6 +2,8 @@ package it;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
+import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -23,7 +25,7 @@ public class TestSentTextToQueue {
 
 	         // Step 3. perform a lookup on the Connection Factory
 	         ConnectionFactory cf = (ConnectionFactory) initialContext.lookup("ConnectionFactory");
-	         cf.createContext("artemis", "artemis");
+	         //cf.createContext("artemis", "artemis");
 	         // Step 4. Create a JMS Connection
 	         connection = cf.createConnection();
 
@@ -45,7 +47,10 @@ public class TestSentTextToQueue {
 	         System.out.println("Sent message: " + message.getText());
 
 	         // Step 10. Send the Message
-	         producer.send(message);
+	         producer.send(message,
+	        		 		DeliveryMode.NON_PERSISTENT,
+	        		 		Message.DEFAULT_PRIORITY, 
+	        		 		Message.DEFAULT_TIME_TO_LIVE);
 
 	         // Step 11. Start the Connection
 	         connection.start();

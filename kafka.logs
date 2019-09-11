@@ -1,0 +1,1189 @@
+Namespace: event-streams
+Key:       kafka
+Endpoint:  https://172.30.0.1:443/api/v1/namespaces/event-streams/pods/event-streams-ibm-es-kafka-sts-0
+Post Body: [{"op": "add", "path": "/metadata/labels/kafka", "value": "0"}]
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+{
+  "kind": "Pod",
+  "apiVersion": "v1",
+  "metadata": {
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 28894    0 28831  100    63   828k   1852 --:--:-- --:--:-- --:--:--  829k
+    "name": "event-streams-ibm-es-kafka-sts-0",
+    "generateName": "event-streams-ibm-es-kafka-sts-",
+    "namespace": "event-streams",
+    "selfLink": "/api/v1/namespaces/event-streams/pods/event-streams-ibm-es-kafka-sts-0",
+    "uid": "d13b1c5c-d337-11e9-a012-005056a53071",
+    "resourceVersion": "5377283",
+    "creationTimestamp": "2019-09-09T19:27:09Z",
+    "labels": {
+      "app": "ibm-es",
+      "chart": "ibm-eventstreams-rhel-prod",
+      "component": "kafka",
+      "configMapRevision": "default",
+      "controller-revision-hash": "event-streams-ibm-es-kafka-sts-646b7bf764",
+      "heritage": "Tiller",
+      "kafka": "0",
+      "release": "event-streams",
+      "releaseConfigMapRevision": "default",
+      "serviceSelector": "kafka-sts",
+      "statefulset.kubernetes.io/pod-name": "event-streams-ibm-es-kafka-sts-0"
+    },
+    "annotations": {
+      "openshift.io/scc": "ibm-es-scc",
+      "productID": "|kafka:5737_H33_chargeable|healthcheck:5737_H33_nonChargeable|metrics-reporter:5737_H33_nonChargeable|metrics-proxy:5737_H33_nonChargeable|tls-proxy:5737_H33_nonChargeable",
+      "productName": "|kafka:IBM Event Streams (Chargeable)|healthcheck:IBM Event Streams|metrics-reporter:IBM Event Streams|metrics-proxy:IBM Event Streams|tls-proxy:IBM Event Streams",
+      "productVersion": "|kafka:1.3.0|healthcheck:1.3.0|metrics-reporter:1.3.0|metrics-proxy:1.3.0|tls-proxy:1.3.0",
+      "prometheus.io/port": "8081",
+      "prometheus.io/scheme": "https",
+      "prometheus.io/scrape": "true"
+    },
+    "ownerReferences": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "StatefulSet",
+        "name": "event-streams-ibm-es-kafka-sts",
+        "uid": "533b8580-d336-11e9-a012-005056a53071",
+        "controller": true,
+        "blockOwnerDeletion": true
+      }
+    ]
+  },
+  "spec": {
+    "volumes": [
+      {
+        "name": "datadir",
+        "persistentVolumeClaim": {
+          "claimName": "datadir-event-streams-ibm-es-kafka-sts-0"
+        }
+      },
+      {
+        "name": "metrics-config-volume",
+        "configMap": {
+          "name": "event-streams-ibm-es-metrics-cm",
+          "defaultMode": 420
+        }
+      },
+      {
+        "name": "ca-certs-volume",
+        "secret": {
+          "secretName": "event-streams-ibm-es-proxy-secret",
+          "items": [
+            {
+              "key": "tls.cluster",
+              "path": "ca-certificates.crt"
+            }
+          ],
+          "defaultMode": 420
+        }
+      },
+      {
+        "name": "proxy-certs-volume",
+        "secret": {
+          "secretName": "event-streams-ibm-es-proxy-secret",
+          "items": [
+            {
+              "key": "podtls.cert",
+              "path": "ca-certificates.crt"
+            }
+          ],
+          "defaultMode": 420
+        }
+      },
+      {
+        "name": "proxy-config-map",
+        "configMap": {
+          "name": "event-streams-ibm-es-kafka-mpcm",
+          "defaultMode": 420
+        }
+      },
+      {
+        "name": "tlsproxy-config-map",
+        "configMap": {
+          "name": "event-streams-ibm-es-kafka-cm",
+          "defaultMode": 420
+        }
+      },
+      {
+        "name": "proxy-secret",
+        "secret": {
+          "secretName": "event-streams-ibm-es-proxy-secret",
+          "items": [
+            {
+              "key": "tls.cert",
+              "path": "tls.cert"
+            },
+            {
+              "key": "tls.key",
+              "path": "tls.key"
+            }
+          ],
+          "defaultMode": 420
+        }
+      },
+      {
+        "name": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+        "secret": {
+          "secretName": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+          "defaultMode": 420
+        }
+      }
+    ],
+    "containers": [
+      {
+        "name": "kafka",
+        "image": "docker-registry.default.svc.cluster.local:5000/event-streams/eventstreams-kafka-icp-linux-amd64:2019-06-19-09.38.53-3a2f93e",
+        "ports": [
+          {
+            "name": "kafka",
+            "containerPort": 9092,
+            "protocol": "TCP"
+          },
+          {
+            "name": "ext-secure",
+            "containerPort": 9093,
+            "protocol": "TCP"
+          },
+          {
+            "name": "es-tlsonly",
+            "containerPort": 9094,
+            "protocol": "TCP"
+          },
+          {
+            "name": "es-loopback",
+            "containerPort": 9095,
+            "protocol": "TCP"
+          }
+        ],
+        "env": [
+          {
+            "name": "LICENSE",
+            "value": "accept"
+          },
+          {
+            "name": "ZK_FIXED_IP_NAME",
+            "value": "127.0.0.1"
+          },
+          {
+            "name": "ZK_CLIENT_PORT",
+            "value": "1181"
+          },
+          {
+            "name": "NAMESPACE",
+            "value": "event-streams"
+          },
+          {
+            "name": "RELEASE",
+            "value": "event-streams"
+          },
+          {
+            "name": "CLUSTER_NAME",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-oauth-secret",
+                "key": "clusterName"
+              }
+            }
+          },
+          {
+            "name": "ES_API_KEY",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-iam-secret",
+                "key": "eventstreams-event-streams-api-key"
+              }
+            }
+          },
+          {
+            "name": "KAFKA_HEAP_OPTS",
+            "value": "-XX:+UseContainerSupport"
+          },
+          {
+            "name": "KAFKA_LISTENERS",
+            "value": "INTERNAL://:9092,EXTERNAL://:9093,INTERNAL_SECURE://:9094,INTERNAL_LOOPBACK://:9095"
+          },
+          {
+            "name": "LISTENER_SECURITY_PROTOCOL_MAP",
+            "value": "INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT,INTERNAL_SECURE:SASL_PLAINTEXT,INTERNAL_LOOPBACK:SASL_PLAINTEXT"
+          },
+          {
+            "name": "ACCESS_CONTROLLER_HOSTNAME",
+            "value": "event-streams-ibm-es-access-controller-svc.event-streams.svc.cluster.local"
+          },
+          {
+            "name": "ACCESS_CONTROLLER_PORT",
+            "value": "8443"
+          },
+          {
+            "name": "ADVERTISED_LISTENERS",
+            "value": "INTERNAL_SECURE://:8084,INTERNAL_LOOPBACK://:8085"
+          },
+          {
+            "name": "INTER_BROKER_PROTOCOL_VERSION",
+            "valueFrom": {
+              "configMapKeyRef": {
+                "name": "event-streams-ibm-es-release-cm",
+                "key": "inter.broker.protocol.version"
+              }
+            }
+          },
+          {
+            "name": "LOG_MESSAGE_FORMAT_VERSION",
+            "valueFrom": {
+              "configMapKeyRef": {
+                "name": "event-streams-ibm-es-release-cm",
+                "key": "log.message.format.version"
+              }
+            }
+          },
+          {
+            "name": "ROOT_LOGGING_LEVEL",
+            "value": "INFO"
+          },
+          {
+            "name": "BROKER_LOGGING_LEVEL",
+            "value": "INFO"
+          },
+          {
+            "name": "REQUEST_LOGGING_LEVEL",
+            "value": "WARN"
+          },
+          {
+            "name": "LOG_CLEANER_LOGGING_LEVEL",
+            "value": "INFO"
+          },
+          {
+            "name": "KAFKA_AUTH_LOGGING_LEVEL",
+            "value": "INFO"
+          },
+          {
+            "name": "LOG_TO_STDOUT",
+            "value": "false"
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "1",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "1",
+            "memory": "2Gi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "name": "proxy-secret",
+            "readOnly": true,
+            "mountPath": "/etc/tls-cert"
+          },
+          {
+            "name": "datadir",
+            "mountPath": "/var/data"
+          },
+          {
+            "name": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+            "readOnly": true,
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+          }
+        ],
+        "livenessProbe": {
+          "httpGet": {
+            "path": "/liveness",
+            "port": 7070,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 360,
+          "timeoutSeconds": 15,
+          "periodSeconds": 15,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "readinessProbe": {
+          "httpGet": {
+            "path": "/readiness",
+            "port": 7070,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 120,
+          "timeoutSeconds": 15,
+          "periodSeconds": 15,
+          "successThreshold": 1,
+          "failureThreshold": 1
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "imagePullPolicy": "IfNotPresent",
+        "securityContext": {
+          "capabilities": {
+            "drop": [
+              "ALL",
+              "MKNOD"
+            ]
+          },
+          "privileged": false,
+          "runAsUser": 65534,
+          "runAsNonRoot": true,
+          "readOnlyRootFilesystem": false,
+          "allowPrivilegeEscalation": false
+        }
+      },
+      {
+        "name": "metrics-reporter",
+        "image": "docker-registry.default.svc.cluster.local:5000/event-streams/eventstreams-kafka-metrics-reporter-icp-linux-amd64:2019-06-18-11.40.33-2900352",
+        "ports": [
+          {
+            "name": "metrics-port",
+            "containerPort": 8081,
+            "protocol": "TCP"
+          }
+        ],
+        "env": [
+          {
+            "name": "LICENSE",
+            "value": "accept"
+          },
+          {
+            "name": "NAMESPACE",
+            "value": "event-streams"
+          },
+          {
+            "name": "METRICS_PORT",
+            "value": "8081"
+          },
+          {
+            "name": "IBM_JAVA_OPTIONS",
+            "value": "-XX:+UseContainerSupport"
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "600m",
+            "memory": "1500Mi"
+          },
+          "requests": {
+            "cpu": "400m",
+            "memory": "1500Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "name": "metrics-config-volume",
+            "mountPath": "/etc/kafka-metrics-reporter"
+          },
+          {
+            "name": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+            "readOnly": true,
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+          }
+        ],
+        "livenessProbe": {
+          "tcpSocket": {
+            "port": 8081
+          },
+          "initialDelaySeconds": 120,
+          "timeoutSeconds": 30,
+          "periodSeconds": 30,
+          "successThreshold": 1,
+          "failureThreshold": 100
+        },
+        "readinessProbe": {
+          "httpGet": {
+            "path": "/metrics",
+            "port": 8081,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 90,
+          "timeoutSeconds": 30,
+          "periodSeconds": 30,
+          "successThreshold": 1,
+          "failureThreshold": 100
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "imagePullPolicy": "IfNotPresent",
+        "securityContext": {
+          "capabilities": {
+            "drop": [
+              "ALL",
+              "MKNOD"
+            ]
+          },
+          "privileged": false,
+          "runAsUser": 65534,
+          "runAsNonRoot": true,
+          "readOnlyRootFilesystem": false,
+          "allowPrivilegeEscalation": false
+        }
+      },
+      {
+        "name": "metrics-proxy",
+        "image": "docker-registry.default.svc.cluster.local:5000/event-streams/eventstreams-kafka-metrics-proxy-icp-linux-amd64:2019-06-20-11.44.32-dc209ab",
+        "ports": [
+          {
+            "name": "external",
+            "containerPort": 8093,
+            "protocol": "TCP"
+          },
+          {
+            "name": "internal",
+            "containerPort": 8084,
+            "protocol": "TCP"
+          },
+          {
+            "name": "loopback",
+            "containerPort": 8085,
+            "protocol": "TCP"
+          },
+          {
+            "name": "proxy-health",
+            "containerPort": 8080,
+            "protocol": "TCP"
+          }
+        ],
+        "env": [
+          {
+            "name": "LICENSE",
+            "value": "accept"
+          },
+          {
+            "name": "ES_CONFIG_PATH",
+            "value": "/config"
+          },
+          {
+            "name": "TLS_CERT",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-proxy-secret",
+                "key": "podtls.cert"
+              }
+            }
+          },
+          {
+            "name": "TLS_KEY",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-proxy-secret",
+                "key": "podtls.key"
+              }
+            }
+          },
+          {
+            "name": "ICP_CLUSTER_EXTERNAL_IP",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-oauth-secret",
+                "key": "clusterExternalIP"
+              }
+            }
+          },
+          {
+            "name": "ICP_CLUSTER_EXTERNAL_PORT",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-oauth-secret",
+                "key": "clusterExternalPort"
+              }
+            }
+          },
+          {
+            "name": "MESSAGE_INDEXING_DISABLED",
+            "value": "false"
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "500m",
+            "memory": "1Gi"
+          },
+          "requests": {
+            "cpu": "500m",
+            "memory": "1Gi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "name": "ca-certs-volume",
+            "readOnly": true,
+            "mountPath": "/etc/ssl/certs"
+          },
+          {
+            "name": "proxy-config-map",
+            "readOnly": true,
+            "mountPath": "/config"
+          },
+          {
+            "name": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+            "readOnly": true,
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+          }
+        ],
+        "livenessProbe": {
+          "httpGet": {
+            "path": "/live",
+            "port": 8080,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 15,
+          "timeoutSeconds": 15,
+          "periodSeconds": 15,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "readinessProbe": {
+          "httpGet": {
+            "path": "/ready",
+            "port": 8080,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 1,
+          "timeoutSeconds": 5,
+          "periodSeconds": 5,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "imagePullPolicy": "IfNotPresent",
+        "securityContext": {
+          "capabilities": {
+            "drop": [
+              "ALL",
+              "MKNOD"
+            ]
+          },
+          "privileged": false,
+          "runAsUser": 65534,
+          "runAsNonRoot": true,
+          "readOnlyRootFilesystem": true,
+          "allowPrivilegeEscalation": false
+        }
+      },
+      {
+        "name": "tls-proxy",
+        "image": "docker-registry.default.svc.cluster.local:5000/event-streams/eventstreams-proxy-icp-linux-amd64:2019-06-20-10.50.39-e8d2e5f",
+        "ports": [
+          {
+            "name": "proxy-health",
+            "containerPort": 8090,
+            "protocol": "TCP"
+          }
+        ],
+        "env": [
+          {
+            "name": "LICENSE",
+            "value": "accept"
+          },
+          {
+            "name": "ES_CONFIG_PATH",
+            "value": "/tlsconfig"
+          },
+          {
+            "name": "HEALTH_PORT",
+            "value": "8090"
+          },
+          {
+            "name": "READY_PORT",
+            "value": "8090"
+          },
+          {
+            "name": "TLS_CERT",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-proxy-secret",
+                "key": "podtls.cert"
+              }
+            }
+          },
+          {
+            "name": "TLS_KEY",
+            "valueFrom": {
+              "secretKeyRef": {
+                "name": "event-streams-ibm-es-proxy-secret",
+                "key": "podtls.key"
+              }
+            }
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "500m",
+            "memory": "100Mi"
+          },
+          "requests": {
+            "cpu": "100m",
+            "memory": "100Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "name": "proxy-certs-volume",
+            "readOnly": true,
+            "mountPath": "/etc/ssl/certs"
+          },
+          {
+            "name": "tlsproxy-config-map",
+            "readOnly": true,
+            "mountPath": "/tlsconfig"
+          },
+          {
+            "name": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+            "readOnly": true,
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+          }
+        ],
+        "livenessProbe": {
+          "httpGet": {
+            "path": "/live",
+            "port": 8090,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 15,
+          "timeoutSeconds": 15,
+          "periodSeconds": 15,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "readinessProbe": {
+          "httpGet": {
+            "path": "/ready",
+            "port": 8090,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 1,
+          "timeoutSeconds": 5,
+          "periodSeconds": 5,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "imagePullPolicy": "IfNotPresent",
+        "securityContext": {
+          "capabilities": {
+            "drop": [
+              "ALL",
+              "MKNOD"
+            ]
+          },
+          "privileged": false,
+          "runAsUser": 65534,
+          "runAsNonRoot": true,
+          "readOnlyRootFilesystem": true,
+          "allowPrivilegeEscalation": false
+        }
+      },
+      {
+        "name": "healthcheck",
+        "image": "docker-registry.default.svc.cluster.local:5000/event-streams/eventstreams-healthcheck-icp-linux-amd64:2019-06-14-13.33.10-9960697",
+        "ports": [
+          {
+            "name": "hc-port",
+            "containerPort": 7070,
+            "protocol": "TCP"
+          }
+        ],
+        "env": [
+          {
+            "name": "LICENSE",
+            "value": "accept"
+          },
+          {
+            "name": "NAMESPACE",
+            "value": "event-streams"
+          },
+          {
+            "name": "ZOOKEEPER_CONNECT",
+            "value": "127.0.0.1:10100,127.0.0.1:10200,127.0.0.1:10300"
+          }
+        ],
+        "resources": {
+          "limits": {
+            "cpu": "200m",
+            "memory": "100Mi"
+          },
+          "requests": {
+            "cpu": "200m",
+            "memory": "100Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "name": "event-streams-ibm-es-kafka-sa-token-vdvsk",
+            "readOnly": true,
+            "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+          }
+        ],
+        "livenessProbe": {
+          "httpGet": {
+            "path": "/healthz",
+            "port": 7070,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 180,
+          "timeoutSeconds": 15,
+          "periodSeconds": 15,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "readinessProbe": {
+          "httpGet": {
+            "path": "/healthz",
+            "port": 7070,
+            "scheme": "HTTP"
+          },
+          "initialDelaySeconds": 150,
+          "timeoutSeconds": 15,
+          "periodSeconds": 15,
+          "successThreshold": 1,
+          "failureThreshold": 3
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "imagePullPolicy": "IfNotPresent",
+        "securityContext": {
+          "capabilities": {
+            "drop": [
+              "ALL",
+              "MKNOD"
+            ]
+          },
+          "privileged": false,
+          "runAsUser": 65534,
+          "runAsNonRoot": true,
+          "readOnlyRootFilesystem": true,
+          "allowPrivilegeEscalation": false
+        }
+      }
+    ],
+    "restartPolicy": "Always",
+    "terminationGracePeriodSeconds": 30,
+    "dnsPolicy": "ClusterFirst",
+    "nodeSelector": {
+      "node-role.kubernetes.io/compute": "true"
+    },
+    "serviceAccountName": "event-streams-ibm-es-kafka-sa",
+    "serviceAccount": "event-streams-ibm-es-kafka-sa",
+    "nodeName": "worker02.green-with-envy.ocp.csplab.local",
+    "securityContext": {
+      "seLinuxOptions": {
+        "level": "s0:c11,c5"
+      },
+      "runAsUser": 65534,
+      "runAsNonRoot": true
+    },
+    "imagePullSecrets": [
+      {
+        "name": "regcred"
+      }
+    ],
+    "hostname": "event-streams-ibm-es-kafka-sts-0",
+    "subdomain": "event-streams-ibm-es-kafka-headless-svc",
+    "affinity": {
+      "nodeAffinity": {
+        "requiredDuringSchedulingIgnoredDuringExecution": {
+          "nodeSelectorTerms": [
+            {
+              "matchExpressions": [
+                {
+                  "key": "beta.kubernetes.io/arch",
+                  "operator": "In",
+                  "values": [
+                    "amd64"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "podAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "weight": 1,
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchExpressions": [
+                  {
+                    "key": "release",
+                    "operator": "In",
+                    "values": [
+                      "event-streams"
+                    ]
+                  },
+                  {
+                    "key": "serviceSelector",
+                    "operator": "In",
+                    "values": [
+                      "zookeeper-sts"
+                    ]
+                  }
+                ]
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            }
+          }
+        ]
+      },
+      "podAntiAffinity": {
+        "preferredDuringSchedulingIgnoredDuringExecution": [
+          {
+            "weight": 1,
+            "podAffinityTerm": {
+              "labelSelector": {
+                "matchExpressions": [
+                  {
+                    "key": "release",
+                    "operator": "In",
+                    "values": [
+                      "event-streams"
+                    ]
+                  },
+                  {
+                    "key": "serviceSelector",
+                    "operator": "In",
+                    "values": [
+                      "kafka-sts"
+                    ]
+                  }
+                ]
+              },
+              "topologyKey": "kubernetes.io/hostname"
+            }
+          }
+        ]
+      }
+    },
+    "schedulerName": "default-scheduler",
+    "tolerations": [
+      {
+        "key": "node.kubernetes.io/memory-pressure",
+        "operator": "Exists",
+        "effect": "NoSchedule"
+      }
+    ],
+    "priority": 0
+  },
+  "status": {
+    "phase": "Running",
+    "conditions": [
+      {
+        "type": "Initialized",
+        "status": "True",
+        "lastProbeTime": null,
+        "lastTransitionTime": "2019-09-09T19:27:09Z"
+      },
+      {
+        "type": "Ready",
+        "status": "False",
+        "lastProbeTime": null,
+        "lastTransitionTime": "2019-09-09T19:27:09Z",
+        "reason": "ContainersNotReady",
+        "message": "containers with unready status: [kafka]"
+      },
+      {
+        "type": "ContainersReady",
+        "status": "False",
+        "lastProbeTime": null,
+        "lastTransitionTime": null,
+        "reason": "ContainersNotReady",
+        "message": "containers with unready status: [kafka]"
+      },
+      {
+        "type": "PodScheduled",
+        "status": "True",
+        "lastProbeTime": null,
+        "lastTransitionTime": "2019-09-09T19:27:09Z"
+      }
+    ],
+    "hostIP": "172.16.50.159",
+    "podIP": "10.130.1.114",
+    "startTime": "2019-09-09T19:27:09Z",
+    "containerStatuses": [
+      {
+        "name": "healthcheck",
+        "state": {
+          "running": {
+            "startedAt": "2019-09-09T21:00:15Z"
+          }
+        },
+        "lastState": {
+          
+        },
+        "ready": true,
+        "restartCount": 0,
+        "image": "172.30.111.140:5000/event-streams/eventstreams-healthcheck-icp-linux-amd64:2019-06-14-13.33.10-9960697",
+        "imageID": "docker-pullable://172.30.111.140:5000/event-streams/eventstreams-healthcheck-icp-linux-amd64@sha256:63367150200a8a412202b758d771ea1dcc789bbcc0e3a689e2711a4e5bec5191",
+        "containerID": "docker://21234bbd7eda3c02fd5ce8ca58e46b76617b24a60982d10516b306dc7a8d7f40"
+      },
+      {
+        "name": "kafka",
+        "state": {
+          "waiting": {
+            "reason": "CrashLoopBackOff",
+            "message": "Back-off 5m0s restarting failed container=kafka pod=event-streams-ibm-es-kafka-sts-0_event-streams(d13b1c5c-d337-11e9-a012-005056a53071)"
+          }
+        },
+        "lastState": {
+          "terminated": {
+            "exitCode": 1,
+            "reason": "Error",
+            "startedAt": "2019-09-09T21:18:16Z",
+            "finishedAt": "2019-09-09T21:18:30Z",
+            "containerID": "docker://80e41d19f09934771d226364c7dc6702c782330f3b64cc70a82d703c137ffc7f"
+          }
+        },
+        "ready": false,
+        "restartCount": 8,
+        "image": "172.30.111.140:5000/event-streams/eventstreams-kafka-icp-linux-amd64:2019-06-19-09.38.53-3a2f93e",
+        "imageID": "docker-pullable://172.30.111.140:5000/event-streams/eventstreams-kafka-icp-linux-amd64@sha256:339b2bbfb985a9e155fbe517e7b16ebdb5d1d2edeb93e8fbab45c6b476ea7def",
+        "containerID": "docker://80e41d19f09934771d226364c7dc6702c782330f3b64cc70a82d703c137ffc7f"
+      },
+      {
+        "name": "metrics-proxy",
+        "state": {
+          "running": {
+            "startedAt": "2019-09-09T21:00:14Z"
+          }
+        },
+        "lastState": {
+          
+        },
+        "ready": true,
+        "restartCount": 0,
+        "image": "172.30.111.140:5000/event-streams/eventstreams-kafka-metrics-proxy-icp-linux-amd64:2019-06-20-11.44.32-dc209ab",
+        "imageID": "docker-pullable://172.30.111.140:5000/event-streams/eventstreams-kafka-metrics-proxy-icp-linux-amd64@sha256:161fefd64c60108091c0d929c84964be342d42eea1af43d1f6f94b3922a6ed78",
+        "containerID": "docker://170f4b9b2892ac1db81d0228d9ca9d4b4b8b1fa0fcf67f360e501b8fc8893011"
+      },
+      {
+        "name": "metrics-reporter",
+        "state": {
+          "running": {
+            "startedAt": "2019-09-09T21:00:14Z"
+          }
+        },
+        "lastState": {
+          
+        },
+        "ready": true,
+        "restartCount": 0,
+        "image": "172.30.111.140:5000/event-streams/eventstreams-kafka-metrics-reporter-icp-linux-amd64:2019-06-18-11.40.33-2900352",
+        "imageID": "docker-pullable://172.30.111.140:5000/event-streams/eventstreams-kafka-metrics-reporter-icp-linux-amd64@sha256:9704f6d1df47341b3f27aa2ddad990f8eb926569e4dda541593d0ad2b0d480c6",
+        "containerID": "docker://55d59f63b5a2855a668d17f505c90526d1e74d4985ac850502ac2c19b4d4c560"
+      },
+      {
+        "name": "tls-proxy",
+        "state": {
+          "running": {
+            "startedAt": "2019-09-09T21:00:14Z"
+          }
+        },
+        "lastState": {
+          
+        },
+        "ready": true,
+        "restartCount": 0,
+        "image": "172.30.111.140:5000/event-streams/eventstreams-proxy-icp-linux-amd64:2019-06-20-10.50.39-e8d2e5f",
+        "imageID": "docker-pullable://172.30.111.140:5000/event-streams/eventstreams-proxy-icp-linux-amd64@sha256:d3da1d33d19de8cd67089ed790f676e598a656f72f32aae767780d97a332ca97",
+        "containerID": "docker://5b2377fb399476220a419289066d7b02b52f4b9a37e2306d1550dcabd367f065"
+      }
+    ],
+    "qosClass": "Burstable"
+  }
+}Generating kafka config
+checking zookeeper-0 (Proxy route 127.0.0.1:10100)
+checking zookeeper-1 (Proxy route 127.0.0.1:10200)
+checking zookeeper-2 (Proxy route 127.0.0.1:10300)
+kafka-server.template
+broker.id=${KAFKA_ID}
+listeners=${LISTENERS}
+zookeeper.connect=${ZOOKEEPER_CONNECT}
+log.dirs=${KAFKA_LOG_DIR}
+advertised.listeners=INTERNAL://127.0.0.1:11000,${ADVERTISED_LISTENERS}
+inter.broker.listener.name=${INTER_BROKER_LISTENER_NAME}
+listener.security.protocol.map=${LISTENER_SECURITY_PROTOCOL_MAP}
+authorizer.class.name=${KAFKA_SASL_AUTHORISER}
+principal.builder.class=${PRINCIPAL_BUILDER_CLASS}
+sasl.enabled.mechanisms=${SASL_ENABLED_MECHANISMS}
+eventstreams.auth.service.uri=https://${ACCESS_CONTROLLER_HOSTNAME}:${ACCESS_CONTROLLER_PORT}
+inter.broker.protocol.version=${INTER_BROKER_PROTOCOL_VERSION}
+log.message.format.version=${LOG_MESSAGE_FORMAT_VERSION}
+ssl.keystore.location=${KEY_STORE_FILE}
+ssl.keystore.password=${KEY_STORE_PASSWORD}
+ssl.truststore.location=${KEY_STORE_FILE}
+ssl.truststore.password=${KEY_STORE_PASSWORD}
+ssl.enabled.protocols=TLSv1.2
+ssl.endpoint.identification.algorithm=
+total 80
+drwxr-sr-x. 1 nobody nobody 4096 Jun 19 09:40 .
+drwxr-xr-x. 1 nobody nobody   35 Sep  9 21:23 ..
+-rw-r--r--. 1 nobody nobody  906 Apr  3 13:16 connect-console-sink.properties
+-rw-r--r--. 1 nobody nobody  909 Apr  3 13:16 connect-console-source.properties
+-rw-r--r--. 1 nobody nobody 5321 Apr  3 13:16 connect-distributed.properties
+-rw-r--r--. 1 nobody nobody  883 Apr  3 13:16 connect-file-sink.properties
+-rw-r--r--. 1 nobody nobody  881 Apr  3 13:16 connect-file-source.properties
+-rw-r--r--. 1 nobody nobody 1111 Apr  3 13:16 connect-log4j.properties
+-rw-r--r--. 1 nobody nobody 2262 Apr  3 13:16 connect-standalone.properties
+-rw-r--r--. 1 nobody nobody 1221 Apr  3 13:16 consumer.properties
+-rw-r--r--. 1 nobody nobody 4996 Jun 19 09:39 kafka-log4j.properties
+-rw-r--r--. 1 nobody nobody 4727 Apr  3 13:16 log4j.properties
+-rw-r--r--. 1 nobody nobody 1925 Apr  3 13:16 producer.properties
+-rw-r--r--. 1 nobody nobody 6851 Apr  3 13:16 server.properties
+-rw-r--r--. 1 nobody nobody 1032 Apr  3 13:16 tools-log4j.properties
+-rw-r--r--. 1 nobody nobody 1169 Apr  3 13:16 trogdor.conf
+-rw-r--r--. 1 nobody nobody 1023 Apr  3 13:16 zookeeper.properties
+Server properties
+broker.id=0
+listeners=INTERNAL://:9092,EXTERNAL://:9093,INTERNAL_SECURE://:9094,INTERNAL_LOOPBACK://:9095
+zookeeper.connect=127.0.0.1:10100,127.0.0.1:10200,127.0.0.1:10300
+log.dirs=/var/data/kafka-logs
+advertised.listeners=INTERNAL://127.0.0.1:11000,INTERNAL_SECURE://:8084,INTERNAL_LOOPBACK://:8085
+inter.broker.listener.name=INTERNAL
+listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT,INTERNAL_SECURE:SASL_PLAINTEXT,INTERNAL_LOOPBACK:SASL_PLAINTEXT
+authorizer.class.name=com.ibm.eventstreams.security.auth.EventStreamsAuthorizer
+principal.builder.class=com.ibm.eventstreams.security.jaas.EventStreamsPrincipalBuilder
+sasl.enabled.mechanisms=PLAIN
+eventstreams.auth.service.uri=https://event-streams-ibm-es-access-controller-svc.event-streams.svc.cluster.local:8443
+inter.broker.protocol.version=2.2
+log.message.format.version=2.2
+ssl.keystore.location=/tmp/kafka/keystore.jks
+ssl.keystore.password=6d5c140769a7cddc5d62f4f6d2ad650a
+ssl.truststore.location=/tmp/kafka/keystore.jks
+ssl.truststore.password=6d5c140769a7cddc5d62f4f6d2ad650a
+ssl.enabled.protocols=TLSv1.2
+ssl.endpoint.identification.algorithm=
+Configuring keystore.
+Entry for alias tls successfully imported.
+Import command completed:  1 entries successfully imported, 0 entries failed or cancelled
+[2019-09-09 21:23:47,664] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)
+[2019-09-09 21:23:48,708] INFO starting (kafka.server.KafkaServer)
+[2019-09-09 21:23:48,709] INFO Connecting to zookeeper on 127.0.0.1:10100,127.0.0.1:10200,127.0.0.1:10300 (kafka.server.KafkaServer)
+[2019-09-09 21:23:48,804] INFO [ZooKeeperClient] Initializing a new session to 127.0.0.1:10100,127.0.0.1:10200,127.0.0.1:10300. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:48,812] INFO Client environment:zookeeper.version=3.4.13-2d71af4dbe22557fda74f9a9b4309b15a7487f03, built on 06/29/2018 00:39 GMT (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,812] INFO Client environment:host.name=event-streams-ibm-es-kafka-sts-0.event-streams-ibm-es-kafka-headless-svc.event-streams.svc.cluster.local (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,812] INFO Client environment:java.version=1.8.0_211 (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,813] INFO Client environment:java.vendor=IBM Corporation (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,813] INFO Client environment:java.home=/opt/ibm/java/jre (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,813] INFO Client environment:java.class.path=/opt/kafka/libs/eventstreams-authorizer-1.0.0.jar:/opt/kafka/bin/../libs/activation-1.1.1.jar:/opt/kafka/bin/../libs/aopalliance-repackaged-2.5.0-b42.jar:/opt/kafka/bin/../libs/argparse4j-0.7.0.jar:/opt/kafka/bin/../libs/audience-annotations-0.5.0.jar:/opt/kafka/bin/../libs/commons-lang3-3.8.1.jar:/opt/kafka/bin/../libs/connect-api-2.2.0.jar:/opt/kafka/bin/../libs/connect-basic-auth-extension-2.2.0.jar:/opt/kafka/bin/../libs/connect-file-2.2.0.jar:/opt/kafka/bin/../libs/connect-json-2.2.0.jar:/opt/kafka/bin/../libs/connect-runtime-2.2.0.jar:/opt/kafka/bin/../libs/connect-transforms-2.2.0.jar:/opt/kafka/bin/../libs/eventstreams-authorizer-1.0.0.jar:/opt/kafka/bin/../libs/guava-20.0.jar:/opt/kafka/bin/../libs/hk2-api-2.5.0-b42.jar:/opt/kafka/bin/../libs/hk2-locator-2.5.0-b42.jar:/opt/kafka/bin/../libs/hk2-utils-2.5.0-b42.jar:/opt/kafka/bin/../libs/jackson-annotations-2.9.8.jar:/opt/kafka/bin/../libs/jackson-core-2.9.8.jar:/opt/kafka/bin/../libs/jackson-databind-2.9.8.jar:/opt/kafka/bin/../libs/jackson-datatype-jdk8-2.9.8.jar:/opt/kafka/bin/../libs/jackson-jaxrs-base-2.9.8.jar:/opt/kafka/bin/../libs/jackson-jaxrs-json-provider-2.9.8.jar:/opt/kafka/bin/../libs/jackson-module-jaxb-annotations-2.9.8.jar:/opt/kafka/bin/../libs/javassist-3.22.0-CR2.jar:/opt/kafka/bin/../libs/javax.annotation-api-1.2.jar:/opt/kafka/bin/../libs/javax.inject-1.jar:/opt/kafka/bin/../libs/javax.inject-2.5.0-b42.jar:/opt/kafka/bin/../libs/javax.servlet-api-3.1.0.jar:/opt/kafka/bin/../libs/javax.ws.rs-api-2.1.1.jar:/opt/kafka/bin/../libs/javax.ws.rs-api-2.1.jar:/opt/kafka/bin/../libs/jaxb-api-2.3.0.jar:/opt/kafka/bin/../libs/jersey-client-2.27.jar:/opt/kafka/bin/../libs/jersey-common-2.27.jar:/opt/kafka/bin/../libs/jersey-container-servlet-2.27.jar:/opt/kafka/bin/../libs/jersey-container-servlet-core-2.27.jar:/opt/kafka/bin/../libs/jersey-hk2-2.27.jar:/opt/kafka/bin/../libs/jersey-media-jaxb-2.27.jar:/opt/kafka/bin/../libs/jersey-server-2.27.jar:/opt/kafka/bin/../libs/jetty-client-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-continuation-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-http-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-io-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-security-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-server-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-servlet-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-servlets-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jetty-util-9.4.14.v20181114.jar:/opt/kafka/bin/../libs/jopt-simple-5.0.4.jar:/opt/kafka/bin/../libs/kafka-clients-2.2.0.jar:/opt/kafka/bin/../libs/kafka-log4j-appender-2.2.0.jar:/opt/kafka/bin/../libs/kafka-streams-2.2.0.jar:/opt/kafka/bin/../libs/kafka-streams-examples-2.2.0.jar:/opt/kafka/bin/../libs/kafka-streams-scala_2.12-2.2.0.jar:/opt/kafka/bin/../libs/kafka-streams-test-utils-2.2.0.jar:/opt/kafka/bin/../libs/kafka-tools-2.2.0.jar:/opt/kafka/bin/../libs/kafka_2.12-2.2.0-sources.jar:/opt/kafka/bin/../libs/kafka_2.12-2.2.0.jar:/opt/kafka/bin/../libs/log4j-1.2.17.jar:/opt/kafka/bin/../libs/lz4-java-1.5.0.jar:/opt/kafka/bin/../libs/maven-artifact-3.6.0.jar:/opt/kafka/bin/../libs/metrics-core-2.2.0.jar:/opt/kafka/bin/../libs/osgi-resource-locator-1.0.1.jar:/opt/kafka/bin/../libs/plexus-utils-3.1.0.jar:/opt/kafka/bin/../libs/reflections-0.9.11.jar:/opt/kafka/bin/../libs/rocksdbjni-5.15.10.jar:/opt/kafka/bin/../libs/scala-library-2.12.8.jar:/opt/kafka/bin/../libs/scala-logging_2.12-3.9.0.jar:/opt/kafka/bin/../libs/scala-reflect-2.12.8.jar:/opt/kafka/bin/../libs/slf4j-api-1.7.25.jar:/opt/kafka/bin/../libs/slf4j-log4j12-1.7.25.jar:/opt/kafka/bin/../libs/snappy-java-1.1.7.2.jar:/opt/kafka/bin/../libs/validation-api-1.1.0.Final.jar:/opt/kafka/bin/../libs/zkclient-0.11.jar:/opt/kafka/bin/../libs/zookeeper-3.4.13.jar:/opt/kafka/bin/../libs/zstd-jni-1.3.8-1.jar (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:java.library.path=/opt/ibm/java/jre/lib/amd64/compressedrefs:/opt/ibm/java/jre/lib/amd64:/usr/lib64:/usr/lib (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:java.io.tmpdir=/tmp (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:java.compiler=j9jit29 (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:os.name=Linux (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:os.arch=amd64 (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:os.version=3.10.0-1062.el7.x86_64 (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:user.name=nobody (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:user.home=/ (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,814] INFO Client environment:user.dir=/opt/kafka (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,816] INFO Initiating client connection, connectString=127.0.0.1:10100,127.0.0.1:10200,127.0.0.1:10300 sessionTimeout=6000 watcher=kafka.zookeeper.ZooKeeperClient$ZooKeeperClientWatcher$@8d26fdd8 (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:48,882] INFO [ZooKeeperClient] Waiting until connected. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:48,883] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:48,885] INFO Opening socket connection to server localhost/127.0.0.1:10300 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:48,890] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:48,894] INFO Socket connection established to localhost/127.0.0.1:10300, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:48,903] WARN Session 0x0 for server localhost/127.0.0.1:10300, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:51)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:235)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:204)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:394)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:68)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:366)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1145)
+[2019-09-09 21:23:49,638] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:49,639] INFO Opening socket connection to server localhost/127.0.0.1:10100 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:49,639] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:49,642] INFO Socket connection established to localhost/127.0.0.1:10100, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:49,648] WARN Session 0x0 for server localhost/127.0.0.1:10100, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:51)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:235)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:204)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:394)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:68)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:366)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1145)
+[2019-09-09 21:23:50,539] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:50,540] INFO Opening socket connection to server localhost/127.0.0.1:10200 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:50,540] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:50,541] INFO Socket connection established to localhost/127.0.0.1:10200, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:50,548] WARN Session 0x0 for server localhost/127.0.0.1:10200, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:51)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:235)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:204)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:394)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:68)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:366)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1145)
+[2019-09-09 21:23:51,936] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:51,937] INFO Opening socket connection to server localhost/127.0.0.1:10300 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:51,937] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:51,938] INFO Socket connection established to localhost/127.0.0.1:10300, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:51,945] WARN Session 0x0 for server localhost/127.0.0.1:10300, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:51)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:235)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:204)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:394)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:68)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:366)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1145)
+[2019-09-09 21:23:52,666] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:52,666] INFO Opening socket connection to server localhost/127.0.0.1:10100 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:52,667] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:52,667] INFO Socket connection established to localhost/127.0.0.1:10100, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:52,674] WARN Session 0x0 for server localhost/127.0.0.1:10100, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:51)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:235)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:204)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:394)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:68)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:366)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1145)
+[2019-09-09 21:23:53,741] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:53,741] INFO Opening socket connection to server localhost/127.0.0.1:10200 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:53,742] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:53,742] INFO Socket connection established to localhost/127.0.0.1:10200, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:53,754] WARN Session 0x0 for server localhost/127.0.0.1:10200, unexpected error, closing socket connection and attempting reconnect (org.apache.zookeeper.ClientCnxn)
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:51)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:235)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:204)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:394)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doIO(ClientCnxnSocketNIO.java:68)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:366)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1145)
+[2019-09-09 21:23:54,887] INFO [ZooKeeperClient] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:55,184] WARN SASL configuration failed: javax.security.auth.login.LoginException: No JAAS configuration section named 'Client' was found in specified JAAS configuration file: '/jaas/event_streams_jaas.conf'. Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it. (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:55,185] INFO Opening socket connection to server localhost/127.0.0.1:10300 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:55,185] ERROR [ZooKeeperClient] Auth failed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:55,186] INFO Socket connection established to localhost/127.0.0.1:10300, initiating session (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:56,298] INFO Session: 0x0 closed (org.apache.zookeeper.ZooKeeper)
+[2019-09-09 21:23:56,299] INFO EventThread shut down for session: 0x0 (org.apache.zookeeper.ClientCnxn)
+[2019-09-09 21:23:56,305] INFO [ZooKeeperClient] Closed. (kafka.zookeeper.ZooKeeperClient)
+[2019-09-09 21:23:56,312] ERROR Fatal error during KafkaServer startup. Prepare to shutdown (kafka.server.KafkaServer)
+kafka.zookeeper.ZooKeeperClientTimeoutException: Timed out waiting for connection while in state: CONNECTING
+	at kafka.zookeeper.ZooKeeperClient.$anonfun$waitUntilConnected$3(ZooKeeperClient.scala:242)
+	at kafka.zookeeper.ZooKeeperClient$$Lambda$110.000000005521C390.apply$mcV$sp(Unknown Source)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+	at kafka.utils.CoreUtils$.inLock(CoreUtils.scala:251)
+	at kafka.zookeeper.ZooKeeperClient.waitUntilConnected(ZooKeeperClient.scala:238)
+	at kafka.zookeeper.ZooKeeperClient.<init>(ZooKeeperClient.scala:96)
+	at kafka.zk.KafkaZkClient$.apply(KafkaZkClient.scala:1825)
+	at kafka.server.KafkaServer.createZkClient$1(KafkaServer.scala:361)
+	at kafka.server.KafkaServer.initZkClient(KafkaServer.scala:385)
+	at kafka.server.KafkaServer.startup(KafkaServer.scala:205)
+	at kafka.server.KafkaServerStartable.startup(KafkaServerStartable.scala:38)
+	at kafka.Kafka$.main(Kafka.scala:75)
+	at kafka.Kafka.main(Kafka.scala)
+[2019-09-09 21:23:56,314] INFO shutting down (kafka.server.KafkaServer)
+[2019-09-09 21:23:56,328] INFO shut down completed (kafka.server.KafkaServer)
+[2019-09-09 21:23:56,329] ERROR Exiting Kafka. (kafka.server.KafkaServerStartable)
+[2019-09-09 21:23:56,335] INFO shutting down (kafka.server.KafkaServer)
