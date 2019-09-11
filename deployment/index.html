@@ -277,9 +277,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#clustering-on-separate-servers" title="Clustering on separate servers" class="md-nav__link">
+    Clustering on separate servers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#running-on-openshift" title="Running on Openshift" class="md-nav__link">
     Running on Openshift
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploying-a-cluster-on-openshift" title="Deploying a cluster on openshift" class="md-nav__link">
+    Deploying a cluster on openshift
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -334,9 +354,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#clustering-on-separate-servers" title="Clustering on separate servers" class="md-nav__link">
+    Clustering on separate servers
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#running-on-openshift" title="Running on Openshift" class="md-nav__link">
     Running on Openshift
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploying-a-cluster-on-openshift" title="Deploying a cluster on openshift" class="md-nav__link">
+    Deploying a cluster on openshift
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -387,7 +427,9 @@ Or you can run the broker in the background using:
 <p>Access the ActiveMQ admin-console as usual. Just invoke <code>http://localhost:8161/</code> artemis/artemis</p>
 <p>The artemis management console looks like:</p>
 <p><img alt="Artemis Console" src="../images/artemis-console.png" /></p>
-<p>The next step is to test with an application, for that see <a href="">this note</a>.</p>
+<p>The next step is to test with a simple application, for that see <a href="../basicjms/">the basicjms note</a> or the AMQP sample <a href="../amqp/">here</a>.</p>
+<h2 id="clustering-on-separate-servers">Clustering on separate servers</h2>
+<p><img alt="" src="" /></p>
 <h2 id="running-on-openshift">Running on Openshift</h2>
 <p>You may follow the <a href="https://access.redhat.com/documentation/en-us/red_hat_amq/7.4/html-single/deploying_amq_broker_on_openshift_container_platform/index#installing-broker-ocp_broker-ocp">instructions</a> for the last AMQ release: at the time of writing it was 7.4. </p>
 <p>The things to do:</p>
@@ -443,6 +485,8 @@ svc/broker-amq-amqp - 172.30.227.85:5672
 </ul>
 </li>
 </ul>
+<h3 id="deploying-a-cluster-on-openshift">Deploying a cluster on openshift</h3>
+<p>The instructions are detailed in <a href="https://access.redhat.com/documentation/en-us/red_hat_amq/7.4/html-single/deploying_amq_broker_on_openshift_container_platform/index#clustered_broker-broker-ocp">section 8.3 of this note</a>, </p>
                 
                   
                 

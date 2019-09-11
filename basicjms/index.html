@@ -303,8 +303,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#producing-text-message" title="Producing text message" class="md-nav__link">
-    Producing text message
+  <a href="#producing-text-message-with-20" title="Producing text message with 2.0" class="md-nav__link">
+    Producing text message with 2.0
   </a>
   
 </li>
@@ -369,8 +369,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#producing-text-message" title="Producing text message" class="md-nav__link">
-    Producing text message
+  <a href="#producing-text-message-with-20" title="Producing text message with 2.0" class="md-nav__link">
+    Producing text message with 2.0
   </a>
   
 </li>
@@ -419,8 +419,12 @@
 </ul>
 <p>A client can have multiple connections and in a connection can have multiple sessions. Each session can have producer, consumer or both. So a client can go to different destinations: queues and topics. </p>
 <h2 id="test-jms-11-app">Test JMS 1.1 app</h2>
-<p>The following steps use the code under the examples/basicjms folder and </p>
-<h2 id="producing-text-message">Producing text message</h2>
+<p>The following steps use the code under the examples/basicjms/src/test folder and validate quickly to send and receive a text message. The integration test is <a href="https://github.com/jbcodeforce/amq-studies/blob/master/examples/basicjms/src/test/java/it/TestSentTextToQueue.java">TestSentTextToQueue</a>.</p>
+<p>To run it use the maven command as:</p>
+<div class="codehilite"><pre><span></span>mvn exec:java -Dexec.mainClass=&quot;it.TestSentTextToQueue&quot; -Dexec.classpathScope=&quot;test&quot;
+</pre></div>
+
+<h2 id="producing-text-message-with-20">Producing text message with 2.0</h2>
 <p>In JMS 1.1 producer.send() blocks until remote peer acknowledges delivery. The code in the <a href="https://github.com/jbcodeforce/amq-studies/blob/84587ecd96a1072b54981f5e44314e908370ab72/examples/basicjms/src/main/java/ibm/gse/eda/basicjms/Publisher.java#L59">Publisher.java</a> class demonstrates the 1.1 API. </p>
 <p>But JMS 2.0, support asynchronous send with CompletionListener. New classes are added like JMSProducer, and JMSConsumer which are lightweight, and have operations to access message properties and to support chaining.  </p>
 <p>In JMS 2.0, the JMSContext implements the AutoCloseable interface, so no need to call the close() operation, if the creation of the JMSContext is in try with resources and catch.</p>

@@ -279,21 +279,21 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#high-availability" title="High Availability" class="md-nav__link">
+    High Availability
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-use-it" title="When to use it" class="md-nav__link">
-    When to use it
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#high-availability" title="High Availability" class="md-nav__link">
-    High Availability
+  <a href="#when-to-use-active-mq-artemis" title="When to use Active MQ Artemis" class="md-nav__link">
+    When to use Active MQ Artemis
   </a>
   
 </li>
@@ -301,6 +301,20 @@
         <li class="md-nav__item">
   <a href="#jms-summary" title="JMS Summary" class="md-nav__link">
     JMS Summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#artemis-maven-plugin" title="Artemis Maven plugin" class="md-nav__link">
+    Artemis Maven plugin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compendium" title="Compendium" class="md-nav__link">
+    Compendium
   </a>
   
 </li>
@@ -382,21 +396,21 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#high-availability" title="High Availability" class="md-nav__link">
+    High Availability
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-use-it" title="When to use it" class="md-nav__link">
-    When to use it
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#high-availability" title="High Availability" class="md-nav__link">
-    High Availability
+  <a href="#when-to-use-active-mq-artemis" title="When to use Active MQ Artemis" class="md-nav__link">
+    When to use Active MQ Artemis
   </a>
   
 </li>
@@ -404,6 +418,20 @@
         <li class="md-nav__item">
   <a href="#jms-summary" title="JMS Summary" class="md-nav__link">
     JMS Summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#artemis-maven-plugin" title="Artemis Maven plugin" class="md-nav__link">
+    Artemis Maven plugin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compendium" title="Compendium" class="md-nav__link">
+    Compendium
   </a>
   
 </li>
@@ -446,31 +474,113 @@ It is now in two flavors: classic and artemis. Artemis is the new architecture.<
 <li>Provide clustering model where messages can be intelligently load balanced between the servers in the cluster, according to the number of consumers on each node, and whether they are ready for messages</li>
 </ul>
 <h2 id="architecture">Architecture</h2>
-<p>Here is a diagram of Artemis architecture:</p>
+<p>The following diagram illustrates the component of Active MQ Artemis architecture for a standalone broker:</p>
 <p><img alt="Artemis architecture" src="images/artemis-arch.png" /></p>
 <ul>
 <li>Each broker server is a Java POJO.</li>
+<li>Broker configuration is defined in a <code>broker.xml</code> file and control clustering, how to access it, and how it connect to other servers, but also its queues and topics.</li>
+<li>A broker instance, is the result of starting a broker process, and is the directory containing all the configuration and runtime data, such as logs and data files, associated with a broker process.</li>
 <li>Use persistent journal to persist messages on disk. It is possible to plug a JDBC and remote database. (This experimental)</li>
 <li>Client applications can interact with any protocol which are mapped to Core protocol. JMS API has a provider that uses the core client library.</li>
 <li>Broker always just deals with core API interactions.</li>
-<li>The normal stand-alone messaging broker configuration comprises a core messaging broker and a number of protocol managers that provide support for the various protoco</li>
+<li>The normal stand-alone messaging broker configuration comprises a core messaging broker and a number of protocol managers that provide support for the various protocols</li>
 </ul>
 <h3 id="clustering">Clustering</h3>
-<p>The goal is to group servers so they can share the message processing. Each server within the cluster manages its own messages and handles its own connections. Cluster is formed by each node declaring cluster connections to other nodes in the <code>broker.xml</code> configuration file. 
-Cluster connections allow messages to flow between the nodes of the cluster to balance load.</p>
-<p><img alt="" src="" /></p>
-<p>A single node can belong to multiple clusters simultaneously. </p>
-<p>There are a set of interesting features to consider:</p>
-<ul>
-<li>Server discovery: each broker shares their connection configuration with client or other server so they can discover them, without explicit knowledge of their static end point. To establish the first connection, clients or servers use dynamic discovery using UDP multicast, or the JGroups.</li>
-<li>To support discovery, each server define a <strong>broadcast group</strong>, which is the means by which a server broadcasts connectors information over the network. <strong>Connector</strong> defines how the client or server can connect to this broker.</li>
-</ul>
-<div class="codehilite"><pre><span></span>
+<p>It is possible to group brokers so they can share the message processing and support high availability. Each server within the cluster manages its own messages and handles its own connections. Cluster is formed by each node declaring cluster connections to other nodes in the <code>broker.xml</code> configuration file or by using dynamic cluster discovery using broadcast technics like UDP multicast.</p>
+<p>Cluster connections allow messages to flow between the nodes of the cluster to balance load. The connector elements specifies how the broker can be accessed. ActiveMQ uses <a href="https://netty.io/">Netty</a> for serving different network protocols</p>
+<div class="codehilite"><pre><span></span><span class="nt">&lt;connectors&gt;</span>
+    <span class="nt">&lt;connector</span> <span class="na">name=</span><span class="s">&quot;netty-connector&quot;</span><span class="nt">&gt;</span>tcp://localhost:61616<span class="nt">&lt;/connector&gt;</span>
+<span class="nt">&lt;/connectors&gt;</span>
 </pre></div>
 
-<h2 id="when-to-use-it">When to use it</h2>
+<p>When the broker starts, it shares its connection configuration with client or other servers using a broadcast address/port defined in a <code>broadcast-group</code></p>
+<div class="codehilite"><pre><span></span><span class="nt">&lt;broadcast-groups&gt;</span>
+  <span class="nt">&lt;broadcast-group</span> <span class="na">name=</span><span class="s">&quot;my-broadcast-group&quot;</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;group-address&gt;</span>${udp-address:231.7.7.7}<span class="nt">&lt;/group-address&gt;</span>
+     <span class="nt">&lt;group-port&gt;</span>9876<span class="nt">&lt;/group-port&gt;</span>
+     <span class="nt">&lt;broadcast-period&gt;</span>100<span class="nt">&lt;/broadcast-period&gt;</span>
+     <span class="nt">&lt;connector-ref&gt;</span>netty-connector<span class="nt">&lt;/connector-ref&gt;</span>
+  <span class="nt">&lt;/broadcast-group&gt;</span>
+<span class="nt">&lt;/broadcast-groups&gt;</span>
+</pre></div>
+
+<p><em>broadcast-period</em> is the period in milliseconds between consecutive broadcasts. <em>connector-ref</em> specifies the connector and optional backup connector that will be broadcasted as data to other servers.</p>
+<p>To support dynamic server discovery each broker needs to define discovery group.  A <strong>discovery group</strong> defines how connector information is received from a broadcast endpoint. The target broker keeps a list of server -&gt; connectors to build the cluster topology dynamically. group-address: is the multicast IP address of the group to listen on. It should match the group-address in the broadcast group that you wish to listen from. refresh-timeout: is the period the discovery group waits after receiving the last broadcast from a particular server before removing that servers connector pair entry from its list.</p>
+<div class="codehilite"><pre><span></span><span class="nt">&lt;discovery-groups&gt;</span>
+   <span class="nt">&lt;discovery-group</span> <span class="na">name=</span><span class="s">&quot;my-discovery-group&quot;</span><span class="nt">&gt;</span>
+       <span class="nt">&lt;group-address&gt;</span>${udp-address:231.7.7.7}<span class="nt">&lt;/group-address&gt;</span>
+       <span class="nt">&lt;group-port&gt;</span>9876<span class="nt">&lt;/group-port&gt;</span>
+       <span class="nt">&lt;refresh-timeout&gt;</span>10000<span class="nt">&lt;/refresh-timeout&gt;</span>
+   <span class="nt">&lt;/discovery-group&gt;</span>
+<span class="nt">&lt;/discovery-groups&gt;</span>
+</pre></div>
+
+<p><img alt="AMQ Cluster" src="images/amq-cluster.png" /></p>
+<p>A single node can belong to multiple clusters simultaneously. Cluster connections group servers into clusters so that messages can be load balanced between the nodes of the cluster. The declaration in the broker.xml may include the following:</p>
+<div class="codehilite"><pre><span></span><span class="nt">&lt;cluster-connections&gt;</span>
+    <span class="nt">&lt;cluster-connection</span> <span class="na">name=</span><span class="s">&quot;my-cluster&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;connector-ref&gt;</span>netty-connector<span class="nt">&lt;/connector-ref&gt;</span>
+      <span class="nt">&lt;retry-interval&gt;</span>500<span class="nt">&lt;/retry-interval&gt;</span>
+      <span class="nt">&lt;use-duplicate-detection&gt;</span>true<span class="nt">&lt;/use-duplicate-detection&gt;</span>
+      <span class="nt">&lt;message-load-balancing&gt;</span>STRICT<span class="nt">&lt;/message-load-balancing&gt;</span>
+      <span class="nt">&lt;max-hops&gt;</span>1<span class="nt">&lt;/max-hops&gt;</span>
+      <span class="nt">&lt;discovery-group-ref</span> <span class="na">discovery-group-name=</span><span class="s">&quot;my-discovery-group&quot;</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;/cluster-connection&gt;</span>
+ <span class="nt">&lt;/cluster-connections&gt;</span>
+</pre></div>
+
+<p><code>connector-ref</code> is the connector which will be sent to other nodes in the cluster so they have the correct cluster topology. <code>retry-interval</code> determines the interval in ms between retry to connect to a failed broker. Remember there are core bridges transparently created when defining cluster connection.</p>
+<p><code>use-duplicate-detection</code> helps to avoid message duplication, by adding an identificator in the message, so duplicate.</p>
+<p><code>message-load-balancing</code> determines how messages will be distributed between other nodes of the cluster. It can be one of three values - OFF, STRICT, or ON_DEMAND. The forward is on the same queue as the master node. ON_DEMAND will forward only if the other broker(s) has consumers with filters matching the message to send.</p>
+<p>Finally, the discovery group is used to obtain the list of other servers in the cluster that this cluster connection will make connections to.</p>
+<h3 id="high-availability">High Availability</h3>
+<p>Clustering addresses part of the high availability requirement. But the client ability to reconnect to another server transparently is also very important as well as persistence data replication. </p>
+<p>There are different master/slave or live/backup configurations: replication (both live and backup have their own message storage), or shared storage. </p>
+<p>Only persistent message data will survive failover. </p>
+<p>High availability configuration is defined as separate configuration: <code>ha-policy</code>. The example below demonstrate a data replication policy, where all persistent data received by the live server will be duplicated to the backup.</p>
 <ul>
-<li>For point to point communication between Java microservices</li>
+<li>Live server:
+    <div class="codehilite"><pre><span></span><span class="nt">&lt;ha-policy&gt;</span>
+    <span class="nt">&lt;replication&gt;</span>
+        <span class="nt">&lt;master&gt;</span>
+            <span class="nt">&lt;check-for-live-server&gt;</span>true<span class="nt">&lt;/check-for-live-server&gt;</span>
+        <span class="nt">&lt;/master&gt;</span>
+    <span class="nt">&lt;/replication&gt;</span>
+<span class="nt">&lt;/ha-policy&gt;</span>
+</pre></div></li>
+<li>Backup server:
+    <div class="codehilite"><pre><span></span><span class="nt">&lt;ha-policy&gt;</span>
+     <span class="nt">&lt;replication&gt;</span>
+        <span class="nt">&lt;slave&gt;</span>
+           <span class="nt">&lt;allow-failback&gt;</span>true<span class="nt">&lt;/allow-failback&gt;</span>
+        <span class="nt">&lt;/slave&gt;</span>
+     <span class="nt">&lt;/replication&gt;</span>
+<span class="nt">&lt;/ha-policy&gt;</span>
+</pre></div>
+Backup server is operational after it finishes synchronizing the data with its live server.
+With colocated both brokers act as live and backup.
+<div class="codehilite"><pre><span></span><span class="nt">&lt;ha-policy&gt;</span>
+    <span class="nt">&lt;shared-store&gt;</span>
+        <span class="nt">&lt;colocated&gt;</span>
+            <span class="nt">&lt;backup-port-offset&gt;</span>100<span class="nt">&lt;/backup-port-offset&gt;</span>
+            <span class="nt">&lt;backup-request-retries&gt;</span>-1<span class="nt">&lt;/backup-request-retries&gt;</span>
+            <span class="nt">&lt;backup-request-retry-interval&gt;</span>2000<span class="nt">&lt;/backup-request-retry-interval&gt;</span>
+            <span class="nt">&lt;max-backups&gt;</span>1<span class="nt">&lt;/max-backups&gt;</span>
+            <span class="nt">&lt;request-backup&gt;</span>true<span class="nt">&lt;/request-backup&gt;</span>
+            <span class="nt">&lt;master&gt;</span>
+                <span class="nt">&lt;failover-on-shutdown&gt;</span>true<span class="nt">&lt;/failover-on-shutdown&gt;</span>
+            <span class="nt">&lt;/master&gt;</span>
+            <span class="nt">&lt;slave&gt;</span>
+                <span class="nt">&lt;failover-on-shutdown&gt;</span>true<span class="nt">&lt;/failover-on-shutdown&gt;</span>
+            <span class="nt">&lt;/slave&gt;</span>
+        <span class="nt">&lt;/colocated&gt;</span>
+    <span class="nt">&lt;/shared-store&gt;</span>
+<span class="nt">&lt;/ha-policy&gt;</span>
+</pre></div></li>
+</ul>
+<h2 id="when-to-use-active-mq-artemis">When to use Active MQ Artemis</h2>
+<ul>
+<li>For point to point communication between Java microservices or other supported programming language.</li>
 <li>To replace RPC style synchronous calls<ul>
 <li>Systems that rely upon synchronous requests typically have a limited ability to scale because eventually requests will begin to back up, thereby slowing the whole system.</li>
 </ul>
@@ -479,9 +589,10 @@ Cluster connections allow messages to flow between the nodes of the cluster to b
 <li>Loosely coupled architectures, on the other hand, exhibit fewer dependencies, making them better at handling unforeseen changes. Not only will a change to one component in the system not ripple across the entire system, but component interaction is also dramatically simplified.</li>
 </ul>
 </li>
-<li>To implement stateful operation for complex event processing</li>
+<li>Support transaction and XA transaction.</li>
+<li>When there is a strong need to do not loose data and use only once delivery semantic.</li>
+<li>To implement stateful operation for complex event processing.</li>
 </ul>
-<h2 id="high-availability">High Availability</h2>
 <h2 id="jms-summary">JMS Summary</h2>
 <p>The goal of JMS is to provide a vendor neutral API for messaging in Java. It is an abstraction layer between Java class and Message Oriented Middleware. </p>
 <ul>
@@ -496,6 +607,30 @@ Cluster connections allow messages to flow between the nodes of the cluster to b
 <li>Destination: An object to which messages are addressed and sent and from which messages are received.</li>
 </ul>
 <p>See producer and consumer code under the <code>examples/basicjms</code> folder and the <a href="basicjms/">explanation note</a>.</p>
+<h2 id="artemis-maven-plugin">Artemis Maven plugin</h2>
+<p>As presented in <a href="https://activemq.apache.org/components/artemis/documentation/1.1.0/maven-plugin.html">this note</a> the development team has provided a Maven plugin to run broker servers using maven. This is very useful for development and testing.</p>
+<div class="codehilite"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.activemq<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>artemis-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</pre></div>
+
+<p>Each pom.xml in our examples uses this plugin. </p>
+<ul>
+<li>Install and configure the server</li>
+</ul>
+<div class="codehilite"><pre><span></span>mvn install
+</pre></div>
+
+<ul>
+<li>Start a server</li>
+</ul>
+<h2 id="compendium">Compendium</h2>
+<ul>
+<li><a href="https://activemq.apache.org/">Apache ActiveMQ Artemis main page</a></li>
+<li><a href="https://activemq.apache.org/components/artemis/documentation/">ActiveMQ Artemis product documentation</a></li>
+<li><a href="https://netty.io/">Netty the asynchronous event driven network application framework for protocol servers</a></li>
+<li><a href="https://activemq.apache.org/components/artemis/documentation/1.1.0/maven-plugin.html">Artemis Maven plugin</a></li>
+</ul>
                 
                   
                 
