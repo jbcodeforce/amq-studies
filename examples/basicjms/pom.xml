@@ -11,7 +11,7 @@
     
     <properties>
         <activemq-version>5.3.2</activemq-version>
-        <junit-version>4.12</junit-version>
+        <junit-version>4.13.1</junit-version>
         <maven-surefire-plugin-version>2.22.2</maven-surefire-plugin-version>
         <maven-failsafe-plugin-version>2.22.2</maven-failsafe-plugin-version>
         <maven.compiler.source>1.8</maven.compiler.source>
